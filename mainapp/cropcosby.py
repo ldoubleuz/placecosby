@@ -1,3 +1,5 @@
+from PIL import Image
+
 ''' given the original dimensions of an image and the target container size,
   returns width/height dimensions for a region that fills as much of 
   the container as possible without overflowing or losing the aspect ratio
@@ -26,7 +28,7 @@ def sizeToContain(oldWidth, oldHeight, containerWidth, containerHeight):
   as possible 
 
   @param img
-    the original PIL image to resize
+    the original PIL image to resize (make sure it is open before calling this!)
   @param targWidth
     the target width of the final image
   @param targHeight
@@ -40,15 +42,19 @@ def sizeToContain(oldWidth, oldHeight, containerWidth, containerHeight):
   @return
     a PIL copy of the orig image, cropped and resized to the target dimensions
 '''
-def resizeImage(img, targWidth, targHeight, cxPercent=0.5, cyPercent=0.5):
-    assert targWidth > 0
-    assert targHeight > 0
+def resizeImage(img, targWidth, targHeight, cxPercent, cyPercent):
+    assert targWidth >= 0
+    assert targHeight >= 0
     assert 0 <= cxPercent <= 1
     assert 0 <= cyPercent <= 1
 
     imgWidth, imgHeight = img.size
     assert imgWidth > 0
     assert imgHeight > 0
+
+    # return blank dummy image if requested a zero image
+    if targWidth == 0 or targHeight == 0:
+        return Image.new("RGB", (targWidth, targHeight))
 
     cx = int(cxPercent * imgWidth)
     cy = int(cyPercent * imgHeight)

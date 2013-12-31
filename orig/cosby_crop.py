@@ -1,8 +1,8 @@
 from PIL import Image
 import os, random, math, imghdr, datetime, json, time
 
-TARGET_WIDTH = random.randint(10, 300)
-TARGET_HEIGHT = random.randint(10, 300)
+TARGET_WIDTH = 3000#random.randint(10, 300)
+TARGET_HEIGHT = 3000#random.randint(10, 300)
 
 curPath = os.path.realpath(__file__)
 PROJECT_DIR = os.path.split(curPath)[0]
@@ -22,14 +22,17 @@ def sizeToContain(oldWidth, oldHeight, containerWidth, containerHeight):
 # resizes the image to the given dimensions, cropping the largest area possible
 # and focusing on as much of the central region as possible
 def resizeImage(img, targWidth, targHeight, cxPercent, cyPercent):
-    assert targWidth > 0
-    assert targHeight > 0
+    assert targWidth >= 0
+    assert targHeight >= 0
     assert 0 <= cxPercent <= 1
     assert 0 <= cyPercent <= 1
 
     imgWidth, imgHeight = img.size
     assert imgWidth > 0
     assert imgHeight > 0
+
+    if targWidth == 0 or targHeight == 0:
+        return Image.new("RGB", (targWidth, targHeight))
 
     cx = int(cxPercent * imgWidth)
     cy = int(cyPercent * imgHeight)
