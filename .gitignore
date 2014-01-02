@@ -1,2 +1,5 @@
 *.sqlite3
 /placecosby/secretSettings.py*
+
+/media/generated
+/media/src

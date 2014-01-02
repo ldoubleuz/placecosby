@@ -4,7 +4,7 @@ from django.utils.html import format_html
 
 import os
 
-# Create your models here.
+# model for a source image to be used for image generation
 class SrcImage(models.Model):
     image = models.ImageField(upload_to="src")
     cxPercent = models.FloatField()
@@ -31,3 +31,32 @@ class SrcImage(models.Model):
 
     class Meta:
         ordering = ["image"]
+
+# model to be used for a generated/cropped image
+class GenImage(models.Model):
+    # the generated image itself
+    genImage = models.ImageField(upload_to="generated", 
+                                 width_field="width", height_field="height")
+
+    # the dimensions of the generated image
+    width = models.PositiveIntegerField()
+    height = models.PositiveIntegerField()
+
+    # the ordinal date this image has been assigned to be the default for,
+    # such that requests for these dimensions on this date will always return
+    # this image
+    assignedDate = models.IntegerField(null=True, blank=True)
+
+    # the SrcImage this image was created from
+    srcImage = models.ForeignKey("SrcImage", related_name="generatedImages")
+
+    def imageName(self):
+        return os.path.basename(self.genImage.url)
+    imageName.admin_order_field = "genImage"
+
+    def imageThumb(self):
+        return format_html('<img src="%s" style="max-width:150px;max-height:150px"/>' % self.genImage.url)
+    imageThumb.allow_tags = True
+
+    class Meta:
+        ordering = ["srcImage", "width", "height"]
