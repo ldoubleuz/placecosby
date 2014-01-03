@@ -54,7 +54,7 @@ def resizeImage(img, targWidth, targHeight, cxPercent, cyPercent):
 
     # return blank dummy image if requested a zero image
     if targWidth == 0 or targHeight == 0:
-        return Image.new("RGB", (targWidth, targHeight))
+        return Image.new("RGBA", (max(1,targWidth), max(1,targHeight)))
 
     cx = int(cxPercent * imgWidth)
     cy = int(cyPercent * imgHeight)

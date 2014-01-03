@@ -1,0 +1,29 @@
+{% extends "mainapp/baseBarebones.html" %}
+{% load mainapp_extratags %}
+{% load absolute %}
+{% load staticfiles %}
+
+{% block title %}- Gallery{% endblock %}
+{% block desc %}Quick placeholder images of Bill Cosby. (zip zop zoobity bop){% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'mainapp/styles/gallery.css' %}" />
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block body %}
+<p>
+    To request specific images, add <strong>?image=i</strong> to the end of your request, where <strong>i</strong> is the zero-indexed number of the image.
+</p>
+<p>Example: <code><a href="{% absolute 'mainapp:request_size' targWidth=200 targHeight=300 %}?image=3">
+                        {% absolute 'mainapp:request_size' targWidth=200 targHeight=300 %}?image=3</a></code></p>
+
+{% for i in numSrcs|range %}
+    <div class="gallery-entry">
+        <img src="{% url 'mainapp:request_size' targWidth=100 targHeight=100 %}?image={{ i }}" width=100 height=100/>
+        <strong>?image={{i}}</strong>
+    </div>
+{% endfor %}
+{% endblock %}

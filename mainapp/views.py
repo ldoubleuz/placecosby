@@ -16,15 +16,18 @@ import cropcosby
 
 MAX_IMAGE_DIM = 5500
 
-# Create your views here.
-def requestIndex(request):
-    return HttpResponse("hello, I am the index")
-
 def parseIntOrNone(num):
     try: 
         return int(num)
     except:
         return None
+
+def requestIndex(request):
+    return render(request, "mainapp/index.html")
+
+def requestGallery(request):
+    numSrcs = SrcImage.objects.order_by("image").count()
+    return render(request, "mainapp/gallery.html", {"numSrcs" : numSrcs})
 
 def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate):
     # open the image before cropping

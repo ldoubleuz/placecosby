@@ -1,0 +1,72 @@
+@import "custommixins";
+@import "settings";
+
+body, html{
+    position:relative;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    min-width:100%;
+    height:100%;
+
+    font-family: "Segoe UI", Frutiger, "Frutiger Linotype", 
+                 "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1em;
+    line-height: 1.3em;
+    text-rendering: optimizeLegibility;
+
+    color: #373737;
+}
+
+a{
+    color: $LINK_COLOR;
+
+    &:hover{
+        color: lighten($LINK_COLOR, $LINK_LIGHTEN_PCT)
+    }
+}
+
+code{
+    font-family: Consolas, monaco, monospace;
+}
+
+#main-container{
+    margin: 0 auto;
+    width: $MAIN_WIDTH;
+}
+
+#main-header {
+    padding-top: 2em;
+    h1{
+        display: inline-block;
+        font-weight: normal;
+        font-size: 3em;
+        margin: 0;
+
+        a {
+            text-decoration: none;
+
+            span:first-child{
+                color: $PLACE_COLOR;
+            }
+            span:last-child{
+                color: $COSBY_COLOR;
+            }
+
+            &:hover{
+                span:first-child{
+                    color: lighten($PLACE_COLOR, $LINK_LIGHTEN_PCT);
+                }
+                span:last-child{
+                    color: lighten($COSBY_COLOR, $LINK_LIGHTEN_PCT);
+                }
+            }
+        }
+    }
+}
+
+#main-footer{
+    padding-top: 1em;
+    clear: both;
+}
+

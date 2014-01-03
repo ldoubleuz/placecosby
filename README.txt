@@ -1,3 +1,3 @@
-Placecosby is a service that generates pictures of Bill Cosby for use as placeholders. 
+Placecosby is a service that generates custom-sized placeholder pictures of Bill Cosby. :D
 
 Inspired by placekitten and placecage.

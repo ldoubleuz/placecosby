@@ -1,0 +1,46 @@
+body, html {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 1em;
+  line-height: 1.3em;
+  text-rendering: optimizeLegibility;
+  color: #373737; }
+
+a {
+  color: #bb205f; }
+  a:hover {
+    color: #e35e94; }
+
+code {
+  font-family: Consolas, monaco, monospace; }
+
+#main-container {
+  margin: 0 auto;
+  width: 860px; }
+
+#main-header {
+  padding-top: 2em; }
+  #main-header h1 {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 3em;
+    margin: 0; }
+    #main-header h1 a {
+      text-decoration: none; }
+      #main-header h1 a span:first-child {
+        color: #7dc622; }
+      #main-header h1 a span:last-child {
+        color: #bb205f; }
+      #main-header h1 a:hover span:first-child {
+        color: #aee569; }
+      #main-header h1 a:hover span:last-child {
+        color: #e35e94; }
+
+#main-footer {
+  padding-top: 1em;
+  clear: both; }

@@ -1,0 +1,23 @@
+@import "custommixins";
+
+body, html{
+    font-family: "Segoe UI", Frutiger, "Frutiger Linotype", 
+                 "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1em;
+    line-height: 1.3em;
+    text-rendering: optimizeLegibility;
+
+    color: #373737;
+}
+
+#main-header {
+    h1{
+        display: inline-block;
+        font-weight: normal;
+        font-size: 3em;
+    }
+
+    a {
+        text-decoration: none;
+    }
+}
