@@ -70,3 +70,86 @@ code{
     clear: both;
 }
 
+.gallery-entry{
+    display: inline-block;
+    margin: .5em;
+    & > * {
+        display: block;
+        text-align: center;
+    }
+
+    img{
+        @include rounded;
+    }
+}
+
+#col1{
+    float: left;
+    width: 49%;
+}
+
+#col2{
+    float: right;
+    width: 49%;
+}
+
+#col1, #col2{
+    section{
+        vertical-align: top;
+        margin: 0;
+        padding: 0;
+        &.row{
+            display: block;
+            margin-bottom: 12px;
+            & > img{
+                display: inline-block;
+            }
+
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+
+        &.col{
+            display: inline-block;
+            margin-right: 12px;
+            & > img{
+                display: block;
+            }
+
+            &:last-child{
+                margin-right: 0;
+            }
+        }
+    }
+
+    img{
+        vertical-align: top;
+    }
+}
+
+#col1, #col2{
+    img{
+        display: inline-block;
+    }
+}
+
+#example-area{
+    margin-top: .5em;
+    margin-bottom: 1.5em;
+}
+
+.code-area{
+    @include rounded;
+    padding: .5em;
+    background-color: $CODE_BG_COLOR;
+    border: 1px solid desaturate(darken($CODE_BG_COLOR, 30%), 50%);
+
+    p{
+        margin: 0;
+    }
+    code a{
+        text-decoration: none;
+    }
+}
+

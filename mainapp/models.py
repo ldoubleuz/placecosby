@@ -59,4 +59,4 @@ class GenImage(models.Model):
     imageThumb.allow_tags = True
 
     class Meta:
-        ordering = ["srcImage", "width", "height"]
+        ordering = ["-assignedDate", "srcImage", "width", "height"]

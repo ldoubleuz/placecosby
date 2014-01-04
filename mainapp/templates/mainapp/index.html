@@ -5,7 +5,6 @@
 {% block desc %}Quick placeholder images of Bill Cosby. (zip zop zoobity bop){% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" type="text/css" href="{% static 'mainapp/styles/index.css' %}" />
 {% endblock %}
 
 {% block scripts %}
@@ -13,7 +12,7 @@
 
 {% block body %}
 <div id="col1">
-    <p>placecosby is a service for web developers that generates custom-sized placeholder pictures of Bill Cosby.</p>
+    <p>placecosby is a service for web developers that generates custom-sized placeholder images of Bill Cosby.</p>
     <p>The API is simple; Just add your image width &amp; height after the placecosby URL!</p>
     <div id="example-area">
         <strong>Examples:</strong>
@@ -56,8 +55,7 @@
                         <img src="{% url 'mainapp:request_size' targWidth=130 targHeight=100 %}" width=130 height=100/>
                     </section>
                     <section class="row">
-                        <img src="{% url 'mainapp:request_size' targWidth=64 targHeight=108 %}" width=64 height=108/>
-                        <img src="{% url 'mainapp:request_size' targWidth=63 targHeight=108 %}" width=63 height=108/>
+                        <img src="{% url 'mainapp:request_size' targWidth=130 targHeight=108 %}" width=130 height=108/>
                     </section>
                 </section>
                 <section class="col">

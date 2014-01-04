@@ -44,3 +44,58 @@ code {
 #main-footer {
   padding-top: 1em;
   clear: both; }
+
+.gallery-entry {
+  display: inline-block;
+  margin: .5em; }
+  .gallery-entry > * {
+    display: block;
+    text-align: center; }
+  .gallery-entry img {
+    border-radius: 4px; }
+
+#col1 {
+  float: left;
+  width: 49%; }
+
+#col2 {
+  float: right;
+  width: 49%; }
+
+#col1 section, #col2 section {
+  vertical-align: top;
+  margin: 0;
+  padding: 0; }
+  #col1 section.row, #col2 section.row {
+    display: block;
+    margin-bottom: 12px; }
+    #col1 section.row > img, #col2 section.row > img {
+      display: inline-block; }
+    #col1 section.row:last-child, #col2 section.row:last-child {
+      margin-bottom: 0; }
+  #col1 section.col, #col2 section.col {
+    display: inline-block;
+    margin-right: 12px; }
+    #col1 section.col > img, #col2 section.col > img {
+      display: block; }
+    #col1 section.col:last-child, #col2 section.col:last-child {
+      margin-right: 0; }
+#col1 img, #col2 img {
+  vertical-align: top; }
+
+#col1 img, #col2 img {
+  display: inline-block; }
+
+#example-area {
+  margin-top: .5em;
+  margin-bottom: 1.5em; }
+
+.code-area {
+  border-radius: 4px;
+  padding: .5em;
+  background-color: #e0ffb8;
+  border: 1px solid #96c757; }
+  .code-area p {
+    margin: 0; }
+  .code-area code a {
+    text-decoration: none; }
