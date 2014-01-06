@@ -4,5 +4,6 @@
 /media/generated
 /media/src
 
+/venv
 /staticfiles
 *.pyc
