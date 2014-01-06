@@ -37,7 +37,7 @@ def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate):
         srcImage = PIL.Image.open(srcImageModel.image)
         srcImage.load()
     except IOError as e:
-        print "unable to open %s" % srcImageObj.image.url
+        print "unable to open %s" % srcImageModel.image.url
         raise e
     finally:
         srcImageModel.image.close()
