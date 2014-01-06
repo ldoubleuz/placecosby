@@ -3,3 +3,6 @@
 
 /media/generated
 /media/src
+
+/staticfiles
+*.pyc

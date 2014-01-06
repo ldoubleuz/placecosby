@@ -1,8 +1,0 @@
-.gallery-entry {
-  display: inline-block;
-  margin: .5em; }
-  .gallery-entry > * {
-    display: block;
-    text-align: center; }
-  .gallery-entry img {
-    border-radius: 4px; }
