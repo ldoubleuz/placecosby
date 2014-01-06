@@ -46,7 +46,7 @@ def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate):
     croppedImage = cropcosby.resizeImage(srcImage, targWidth, targHeight,
                                          srcImageModel.cxPercent, 
                                          srcImageModel.cyPercent)
-    
+
     # actually generate the model for the generated image
     genImageModel = GenImage(assignedDate=assignedDate, srcImage=srcImageModel)
 
@@ -55,7 +55,7 @@ def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate):
     # create an image file from the cropped PIL image
     # based on http://stackoverflow.com/a/4544525
     imageIO = StringIO.StringIO()
-    croppedImage.save(imageIO, format="PNG") # save to the buffer
+    croppedImage.save(imageIO, format="JPEG") # save to the buffer
     imageFile = ContentFile(imageIO.getvalue())
 
     # finally save the image to the model
