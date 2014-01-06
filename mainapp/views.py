@@ -36,7 +36,7 @@ def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate):
         # call load() to force the data to be read immediately
         srcImage = PIL.Image.open(srcImageModel.image)
         srcImage.load()
-    except IOError(e):
+    except IOError as e:
         print "unable to open %s" % srcImageObj.image.url
         raise e
     finally:
