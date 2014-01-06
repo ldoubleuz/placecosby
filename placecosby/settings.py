@@ -24,12 +24,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-if DEBUG:
-    import secretSettings
-    # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = secretSettings.SECRET_KEY 
-else:
-    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 
 # Application definition
