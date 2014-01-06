@@ -2,7 +2,11 @@ from django.core.management.base import BaseCommand, CommandError
 from mainapp.models import SrcImage
 from django.core.files import File
 from django.core.exceptions import ObjectDoesNotExist
-import os, json
+from django.core.files.base import ContentFile 
+import os
+import json
+import PIL
+import StringIO
 
 COMMAND_DIR = os.path.dirname(os.path.realpath(__file__))
 MANAGEMENT_DIR = os.path.dirname(COMMAND_DIR)
@@ -23,19 +27,27 @@ class Command(BaseCommand):
 
         imageFilenames = os.listdir(IMAGE_DIR)
 
-        for imageName in imageFilenames:
+        for origImageName in imageFilenames:
             # read center stats from json
-            if imageName not in centerPercents:
+            if origImageName not in centerPercents:
                 continue
-            [cxPercent, cyPercent] = centerPercents[imageName]
-            imagePath = os.path.join(IMAGE_DIR, imageName)
+            [cxPercent, cyPercent] = centerPercents[origImageName]
+            imagePath = os.path.join(IMAGE_DIR, origImageName)
+
+            # convert copy of image to jpg
+            newImageName = "%s.jpg" % os.path.splitext(origImageName)[0]
+            newImageObj = PIL.Image.open(imagePath).copy().convert("RGB")
+
+            # open jpg as file for saving
+            imageIO = StringIO.StringIO()
+            newImageObj.save(imageIO, format="JPEG") # save to the buffer
+            imageFile = ContentFile(imageIO.getvalue())
 
             # create the new SrcImage object
-            newImageObj = SrcImage(cxPercent=cxPercent, cyPercent=cyPercent)
+            newImageModel = SrcImage(cxPercent=cxPercent, cyPercent=cyPercent)
 
-            # actually open and save the image file contents to the new object
-            with open(imagePath, "rb") as imageFile:
-                self.stdout.write("saving %s..." % imageName, ending="")
-                # use save=True to also save the SrcImage object
-                newImageObj.image.save(imageName, File(imageFile), save=True)
-                self.stdout.write("saved to %s!" % newImageObj.image.url)
+            # save the image file contents to the new object
+            self.stdout.write("saving %s..." % origImageName, ending="")
+            # use save=True to also save the SrcImage object
+            newImageModel.image.save(newImageName, imageFile, save=True)
+            self.stdout.write("saved to %s!" % newImageModel.image.url)
