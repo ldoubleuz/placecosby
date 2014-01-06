@@ -14,7 +14,7 @@ import traceback
 
 import cropcosby
 
-MAX_IMAGE_DIM = 5500
+MAX_IMAGE_DIM = 3000
 
 def parseIntOrNone(num):
     try: 
