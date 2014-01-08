@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
