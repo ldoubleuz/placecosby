@@ -52,7 +52,7 @@ def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate, gen
         genImageModel = GenImage(assignedDate=assignedDate, 
                                  srcImage=srcImageModel)
 
-    imageName = "%s-%s_%s" % (targWidth, targHeight, srcImageModel.rawImageName())
+    imageName = "%s-%s_%s" % (targWidth, targHeight, srcImageModel.imageName())
 
     # create an image file from the cropped PIL image
     # based on http://stackoverflow.com/a/4544525

@@ -21,11 +21,7 @@ class SrcImage(models.Model):
     cyPercent = models.FloatField()
 
     def imageName(self):
-        return os.path.basename(self.image.url)
-    imageName.admin_order_field = "image"
-
-    def rawImageName(self):
-        return self.imageName().split("?")[0]
+        return os.path.basename(self.image.url).split("?")[0]
     imageName.admin_order_field = "image"
 
     def imageThumb(self):
@@ -68,11 +64,7 @@ class GenImage(models.Model):
     srcImage = models.ForeignKey("SrcImage", related_name="generatedImages")
 
     def imageName(self):
-        return os.path.basename(self.genImage.url)
-    imageName.admin_order_field = "genImage"
-
-    def rawImageName(self):
-        return self.imageName().split("?")[0]
+        return os.path.basename(self.genImage.url).split("?")[0]
     imageName.admin_order_field = "genImage"
 
     def imageThumb(self):
