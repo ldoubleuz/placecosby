@@ -11,7 +11,7 @@ class SrcImage(models.Model):
     cyPercent = models.FloatField()
 
     def imageName(self):
-        return os.path.basename(self.image.url)
+        return os.path.basename(self.image.url).split("?")[0]
     imageName.admin_order_field = "image"
 
     def imageThumb(self):
