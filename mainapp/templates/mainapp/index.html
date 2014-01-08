@@ -2,15 +2,12 @@
 {% load staticfiles %}
 {% load absolute %}
 
-{% block desc %}Quick placeholder images of Bill Cosby. (zip zop zoobity bop){% endblock %}
+{% block styles %}{% endblock %}
 
-{% block styles %}
-{% endblock %}
-
-{% block scripts %}
-{% endblock %}
+{% block scripts %}{% endblock %}
 
 {% block body %}
+{% spaceless %}
 <div id="col1">
     <p>placecosby is a service for web developers that generates custom-sized placeholder images of Bill Cosby.</p>
     <p>The API is simple; Just add your image width &amp; height after the placecosby URL!</p>
@@ -42,24 +39,24 @@
 </div>
 <div id="col2">
     <section class="row">
-        <img src="{% url 'mainapp:request_size' targWidth=420 targHeight=100 %}" width=420 height=100/>
+        <img src="{% url 'mainapp:request_size' targWidth=420 targHeight=101 %}" width=420 height=101/>
     </section>
     <section class="row">
         <section class="col">
-            <img src="{% url 'mainapp:request_size' targWidth=129 targHeight=360 %}" width=129 height=360/>
+            <img src="{% url 'mainapp:request_size' targWidth=132 targHeight=360 %}" width=132 height=360/>
         </section>
         <section class="col">
             <section class="row">
                 <section class="col">
                     <section class="row">
-                        <img src="{% url 'mainapp:request_size' targWidth=130 targHeight=100 %}" width=130 height=100/>
+                        <img src="{% url 'mainapp:request_size' targWidth=132 targHeight=100 %}" width=132 height=100/>
                     </section>
                     <section class="row">
-                        <img src="{% url 'mainapp:request_size' targWidth=130 targHeight=108 %}" width=130 height=108/>
+                        <img src="{% url 'mainapp:request_size' targWidth=132 targHeight=108 %}" width=132 height=108/>
                     </section>
                 </section>
                 <section class="col">
-                    <img src="{% url 'mainapp:request_size' targWidth=129 targHeight=220 %}" width=129 height=220/>
+                    <img src="{% url 'mainapp:request_size' targWidth=132 targHeight=220 %}" width=132 height=220/>
                 </section>
             </section>
             <section class="row">
@@ -68,4 +65,5 @@
         </section>
     </section>
 </div>
+{% endspaceless %}
 {% endblock %}
