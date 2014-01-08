@@ -25,7 +25,7 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # Application definition
 
@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'annoying',
     'absolute',
     'mainapp',
@@ -96,7 +97,7 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'absolute.context_processors.absolute',
 )
 
-######### heroku settings ##############
+######### heroku/amazon s3 settings ##############
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
 DATABASES['default'] =  dj_database_url.config()
@@ -111,8 +112,19 @@ ALLOWED_HOSTS = ['*']
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
+
+STATICFILES_STORAGE = 's3util.StaticStorage'
+DEFAULT_FILE_STORAGE = 's3util.MediaStorage'
+
+STATIC_URL = 'http://s3.amazonaws.com/%s/staticfiles/' % AWS_STORAGE_BUCKET_NAME
+MEDIA_URL = 'http://s3.amazonaws.com/%s/media/'
+ADMIN_MEDIA_PREFIX = '%s/admin/' % STATIC_URL
