@@ -29,7 +29,17 @@ def requestGallery(request):
     numSrcs = SrcImage.objects.order_by("image").count()
     return render(request, "mainapp/gallery.html", {"numSrcs" : numSrcs})
 
-def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate, genImageModel=None):
+def regenerateCroppedImage(genImageModel):
+    try:
+        generateCroppedImage(genImageModel.srcImage, genImageModel.width, 
+                             genImageModel.height, genImageModel.assignedDate, 
+                             genImageModel=genImageModel)
+    except IOError as e:
+        print "unable to regenerate image %s" % genImageModel.imageName
+        raise e
+
+def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate, 
+                         genImageModel=None):
     # open the image before cropping
     try:
         srcImageModel.image.open("rb")
@@ -73,13 +83,11 @@ def getRequestedGenImage(targWidth, targHeight, srcImage, assignedDate=None):
         if assignedDate is not None:
             cachedImage.assignedDate = assignedDate
             cachedImage.save()
-        if cachedImage.imageExists():
-            return cachedImage
+        return cachedImage
 
-    # in cases where either the image doesn't already exist or the stored image 
-    # has expired/gone missing, generate a new image
-    return generateCroppedImage(srcImage, targWidth, targHeight, assignedDate, 
-                                genImageModel=cachedImage)
+    # in cases where either the image doesn't already exist,
+    # generate a new image
+    return generateCroppedImage(srcImage, targWidth, targHeight, assignedDate)
 
 # for requests that don't specify a source image to use
 def getDefaultGenImage(targWidth, targHeight, allSrcs, numSrcs):
@@ -87,14 +95,10 @@ def getDefaultGenImage(targWidth, targHeight, allSrcs, numSrcs):
     cachedImage = get_object_or_None(GenImage, width=targWidth, 
                                      height=targHeight, assignedDate=curDate)
     if cachedImage:
-        if cachedImage.imageExists():
-            return cachedImage
-        # otherwise, indicate that we need to regenerate image
-        else:
-            srcImage = cachedImage.srcImage
-    else:
-        # pick a random source image to request
-        srcImage = allSrcs[random.randint(0, numSrcs-1)]
+        return cachedImage
+    
+    # pick a random source image to request
+    srcImage = allSrcs[random.randint(0, numSrcs-1)]
 
     return getRequestedGenImage(targWidth, targHeight, srcImage, 
                                 assignedDate=curDate)
@@ -130,7 +134,12 @@ def requestSize(request, targWidth, targHeight):
     response = HttpResponse(content_type="image/png")
     # open the stored image and output directly to the response
     try:
-        outputGenImage.genImage.open("rb")
+        try:
+            outputGenImage.genImage.open("rb")
+        # make one attempt to regenerate image if it is missing
+        except IOError:
+            regenerateCroppedImage(outputGenImage)
+            outputGenImage.genImage.open("rb")
         outputImage = PIL.Image.open(outputGenImage.genImage)
         outputImage.load()
         outputImage.save(response, "PNG")
