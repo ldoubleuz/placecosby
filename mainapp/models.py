@@ -5,7 +5,14 @@ from django.utils.html import format_html
 import os
 
 def fileExists(fileField):
-    return fileField.storage.exists(fileField.path)
+    exists = True
+    try:
+        fileField.open()
+    except IOError:
+        exists = False
+    finally:
+        fileField.close()
+    return exists
 
 # model for a source image to be used for image generation
 class SrcImage(models.Model):
