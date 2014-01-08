@@ -125,6 +125,6 @@ AWS_STORAGE_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
 STATICFILES_STORAGE = 's3util.StaticStorage'
 DEFAULT_FILE_STORAGE = 's3util.MediaStorage'
 
-STATIC_URL = 'http://s3.amazonaws.com/%s/staticfiles/' % AWS_STORAGE_BUCKET_NAME
-MEDIA_URL = 'http://s3.amazonaws.com/%s/media/'
+STATIC_URL = 'http://%s.s3.amazonaws.com/staticfiles/' % AWS_STORAGE_BUCKET_NAME
+MEDIA_URL = 'http://%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
 ADMIN_MEDIA_PREFIX = '%s/admin/' % STATIC_URL
