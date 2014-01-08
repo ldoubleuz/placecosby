@@ -29,7 +29,7 @@ def requestGallery(request):
     numSrcs = SrcImage.objects.order_by("image").count()
     return render(request, "mainapp/gallery.html", {"numSrcs" : numSrcs})
 
-def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate):
+def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate, genImageModel=None):
     # open the image before cropping
     try:
         srcImageModel.image.open("rb")
@@ -47,8 +47,10 @@ def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate):
                                          srcImageModel.cxPercent, 
                                          srcImageModel.cyPercent)
 
-    # actually generate the model for the generated image
-    genImageModel = GenImage(assignedDate=assignedDate, srcImage=srcImageModel)
+    # actually generate the model for the generated image, if not already given
+    if not genImageModel:
+        genImageModel = GenImage(assignedDate=assignedDate, 
+                                 srcImage=srcImageModel)
 
     imageName = "%s-%s_%s" % (targWidth, targHeight, srcImageModel.imageName())
 
@@ -67,11 +69,17 @@ def getRequestedGenImage(targWidth, targHeight, srcImage, assignedDate=None):
     cachedImage = get_object_or_None(GenImage, width=targWidth, 
                                      height=targHeight, srcImage=srcImage)
     if cachedImage:
+        # update date
         if assignedDate is not None:
             cachedImage.assignedDate = assignedDate
             cachedImage.save()
-        return cachedImage
-    return generateCroppedImage(srcImage, targWidth, targHeight, assignedDate)
+        if cachedImage.imageExists():
+            return cachedImage
+
+    # in cases where either the image doesn't already exist or the stored image 
+    # has expired/gone missing, generate a new image
+    return generateCroppedImage(srcImage, targWidth, targHeight, assignedDate, 
+                                genImageModel=cachedImage)
 
 # for requests that don't specify a source image to use
 def getDefaultGenImage(targWidth, targHeight, allSrcs, numSrcs):
@@ -79,13 +87,17 @@ def getDefaultGenImage(targWidth, targHeight, allSrcs, numSrcs):
     cachedImage = get_object_or_None(GenImage, width=targWidth, 
                                      height=targHeight, assignedDate=curDate)
     if cachedImage:
-        return cachedImage
+        if cachedImage.imageExists():
+            return cachedImage
+        # otherwise, indicate that we need to regenerate image
+        else:
+            srcImage = cachedImage.srcImage
+    else:
+        # pick a random source image to request
+        srcImage = allSrcs[random.randint(0, numSrcs-1)]
 
-    # pick a random image
-    srcImage = allSrcs[random.randint(0, numSrcs-1)]
-    finalImage = getRequestedGenImage(targWidth, targHeight, srcImage, 
-                                      assignedDate=curDate)
-    return finalImage
+    return getRequestedGenImage(targWidth, targHeight, srcImage, 
+                                assignedDate=curDate)
 
 def requestSize(request, targWidth, targHeight):
     targWidth = parseIntOrNone(targWidth)
@@ -104,12 +116,12 @@ def requestSize(request, targWidth, targHeight):
 
     requestIndex = parseIntOrNone(request.GET.get("image", None))
     try:
-        if requestIndex is None or requestIndex < 0 or requestIndex >= numSrcs:
+        if requestIndex is None:
             outputGenImage = getDefaultGenImage(targWidth, targHeight, 
                                                 allSrcs, numSrcs)
         else:
             outputGenImage = getRequestedGenImage(targWidth, targHeight, 
-                                                  allSrcs[requestIndex])
+                                                  allSrcs[requestIndex % numSrcs])
     except IOError:
         traceback.print_exc()
         return HttpResponseServerError("unable to retrieve image")
