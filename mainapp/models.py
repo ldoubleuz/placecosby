@@ -24,6 +24,10 @@ class SrcImage(models.Model):
         return os.path.basename(self.image.url)
     imageName.admin_order_field = "image"
 
+    def rawImageName(self):
+        return self.imageName().split("?")[0]
+    imageName.admin_order_field = "image"
+
     def imageThumb(self):
         return format_html('<img src="%s" style="max-width:150px;max-height:150px"/>' % self.image.url)
     imageThumb.allow_tags = True
@@ -65,6 +69,10 @@ class GenImage(models.Model):
 
     def imageName(self):
         return os.path.basename(self.genImage.url)
+    imageName.admin_order_field = "genImage"
+
+    def rawImageName(self):
+        return self.imageName().split("?")[0]
     imageName.admin_order_field = "genImage"
 
     def imageThumb(self):
