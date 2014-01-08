@@ -4,6 +4,16 @@ from django.utils.html import format_html
 
 import os
 
+def fileExists(fileField):
+    exists = True
+    try:
+        fileField.open()
+    except IOError:
+        exists = False
+    finally:
+        fileField.close()
+    return exists
+
 # model for a source image to be used for image generation
 class SrcImage(models.Model):
     image = models.ImageField(upload_to="src")
@@ -17,6 +27,9 @@ class SrcImage(models.Model):
     def imageThumb(self):
         return format_html('<img src="%s" style="max-width:150px;max-height:150px"/>' % self.image.url)
     imageThumb.allow_tags = True
+
+    def imageExists(self):
+        return fileExists(self.image)
 
     def __unicode__(self):
         return self.imageName()
@@ -57,6 +70,9 @@ class GenImage(models.Model):
     def imageThumb(self):
         return format_html('<img src="%s" style="max-width:150px;max-height:150px"/>' % self.genImage.url)
     imageThumb.allow_tags = True
+
+    def imageExists(self):
+        return fileExists(self.genImage)
 
     class Meta:
         ordering = ["-assignedDate", "srcImage", "width", "height"]
