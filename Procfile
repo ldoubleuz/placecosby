@@ -1,1 +1,1 @@
-web: newrelic-admin run-program gunicorn placecosby.wsgi
+web: gunicorn placecosby.wsgi

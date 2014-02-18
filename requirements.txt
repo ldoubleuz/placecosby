@@ -11,4 +11,3 @@ gunicorn==18.0
 psycopg2==2.4.6
 static==0.4
 wsgiref==0.1.2
-newrelic==2.14.0.11
