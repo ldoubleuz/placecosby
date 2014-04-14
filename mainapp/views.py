@@ -126,24 +126,24 @@ def requestSize(request, targWidth, targHeight):
         else:
             outputGenImage = getRequestedGenImage(targWidth, targHeight, 
                                                   allSrcs[requestIndex % numSrcs])
-    except IOError:
+    except Exception:
         traceback.print_exc()
         return HttpResponseServerError("unable to retrieve image")
 
     # convert cropped image into an http response
-    response = HttpResponse(content_type="image/png")
+    response = HttpResponse(content_type="image/jpeg")
     # open the stored image and output directly to the response
     try:
         try:
             outputGenImage.genImage.open("rb")
         # make one attempt to regenerate image if it is missing
-        except IOError:
+        except Exception:
             regenerateCroppedImage(outputGenImage)
             outputGenImage.genImage.open("rb")
         outputImage = PIL.Image.open(outputGenImage.genImage)
         outputImage.load()
-        outputImage.save(response, "PNG")
-    except IOError:
+        outputImage.save(response, "JPEG")
+    except Exception:
         traceback.print_exc()
         response = HttpResponseServerError("unable to retrieve image")
     finally:
