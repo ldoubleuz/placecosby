@@ -56,13 +56,21 @@ def generateCroppedImage(srcImageModel, targWidth, targHeight, assignedDate,
     croppedImage = cropcosby.resizeImage(srcImage, targWidth, targHeight,
                                          srcImageModel.cxPercent, 
                                          srcImageModel.cyPercent)
+    cropWidth, cropHeight = croppedImage.size
 
     # actually generate the model for the generated image, if not already given
     if not genImageModel:
-        genImageModel = GenImage(assignedDate=assignedDate, 
-                                 srcImage=srcImageModel)
+        kwargs = {
+            "srcImage": srcImageModel,
+            "width": cropWidth, 
+            "height": cropHeight
+        }
+        genImageModel = get_object_or_None(GenImage, **kwargs)
+        if not genImageModel:
+            genImageModel = GenImage(assignedDate=assignedDate, **kwargs)
+            genImageModel.save()
 
-    imageName = "%s-%s_%s" % (targWidth, targHeight, srcImageModel.imageName())
+    imageName = "%s-%s_%s" % (cropWidth, cropHeight, srcImageModel.imageName())
 
     # create an image file from the cropped PIL image
     # based on http://stackoverflow.com/a/4544525
@@ -112,8 +120,10 @@ def requestSize(request, targWidth, targHeight):
     elif targWidth > MAX_IMAGE_DIM or targHeight > MAX_IMAGE_DIM:
         return HttpResponseBadRequest("image too large, please request something smaller")
     
-    targWidth = max(targWidth, 0)
-    targHeight = max(targHeight, 0)
+    # since 0 sized images end up needing to be rendered as at least 1 size
+    # anyways, constrain to a minimum of 1px instead of 0px
+    targWidth = max(targWidth, 1) 
+    targHeight = max(targHeight, 1)
 
     allSrcs = SrcImage.objects.order_by("image")
     numSrcs = allSrcs.count()
