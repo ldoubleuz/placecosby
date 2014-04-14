@@ -7,3 +7,5 @@
 /venv
 /staticfiles
 *.pyc
+
+log.txt
