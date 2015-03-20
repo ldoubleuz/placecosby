@@ -6,8 +6,13 @@ class SrcImageAdmin(admin.ModelAdmin):
     readonly_fields = ("imageThumb", "imageName")
 
 class GenImageAdmin(admin.ModelAdmin):
-    list_display = ("imageName", "width", "height", "srcImage", "assignedDate")
-    readonly_fields = ("imageThumb", "imageName")
+    list_display = (
+        "imageName", "width", "height", "srcImage", "assignedDate", 
+        "createdTimestamp", "createdTimestampISO"
+    )
+    readonly_fields = (
+        "imageThumb", "imageName", "createdTimestamp", "createdTimestampISO"
+    )
 
 # Register your models here.
 admin.site.register(mainapp.models.SrcImage, SrcImageAdmin)

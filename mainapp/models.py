@@ -50,6 +50,9 @@ class GenImage(models.Model):
     # the SrcImage this image was created from
     srcImage = models.ForeignKey("SrcImage", related_name="generatedImages")
 
+    # when this model was created (for cleanup usage)
+    createdTimestamp = models.DateTimeField(auto_now_add=True)
+
     def imageName(self):
         return os.path.basename(self.genImage.url).split("?")[0]
     imageName.admin_order_field = "genImage"
@@ -57,6 +60,9 @@ class GenImage(models.Model):
     def imageThumb(self):
         return format_html('<img src="%s" style="max-width:150px;max-height:150px"/>' % self.genImage.url)
     imageThumb.allow_tags = True
+
+    def createdTimestampISO(self):
+        return self.createdTimestamp.isoformat()
 
     class Meta:
         ordering = ["-assignedDate", "srcImage", "width", "height"]
