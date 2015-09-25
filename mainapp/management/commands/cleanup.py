@@ -20,7 +20,7 @@ class UTC(datetime.tzinfo):
         return ZERO
 
 
-DELTA = datetime.timedelta(hours=24)
+DELTA = datetime.timedelta(hours=3)
 class Command(BaseCommand):
     help = "Cleans up any generated image models older than a fixed delta"
 
